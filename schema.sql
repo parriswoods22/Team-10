@@ -1,5 +1,3 @@
-DROP TABLE Smoking_Data;
-
 CREATE TABLE Smoking_Data(
 index INTEGER,
 year INTEGER,
