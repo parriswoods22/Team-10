@@ -59,8 +59,7 @@ def country():
 
     for country in countries:
         measure_dict ={"Country": country, "Years":[]}
-        for year in years:
-            for index,year,Location,CigaretteSmokingPrevalence,TobaccoSmokingPrevalence,TobaccoUsePrevalence,MostSoldBrandCigaretteCurrency,MostSoldBrandCigarettePrice,rates,MostSoldUSD in results:
+        for index,year,Location,CigaretteSmokingPrevalence,TobaccoSmokingPrevalence,TobaccoUsePrevalence,MostSoldBrandCigaretteCurrency,MostSoldBrandCigarettePrice,rates,MostSoldUSD in results:
                 if country == Location:
                     measure_dict["Years"].append({
                         "Year":year,
