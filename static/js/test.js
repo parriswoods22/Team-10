@@ -32,6 +32,114 @@ d3.json(url).then((json_data) => {
 });
 };
 init();
+
+function markerColor(depth){
+  if (depth>=60){
+      return "#fc1414";
+  }
+  else if (depth>=50){
+      return "#f15300";
+  }
+  else if (depth>=40){
+      return "#de7800";
+  }
+  else if (depth>=30){
+      return "#c39600";
+  }
+  else if (depth>=20){
+      return "#a1af00";
+  }
+  else if (depth>=10){
+      return "#74c400";
+  }
+  else{
+      return "#06d718";
+  }
+};
+function createMap(prevMarks1,prevMarks2,prevMarks3){
+  var map = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+  var baseMaps = {street: map}
+  var layer = {CigaretteSmokingPrevalence: new L.LayerGroup(prevMarks1),TobaccoUsePrevalence: new L.LayerGroup(prevMarks2),TobaccoSmokingPrevalence: new L.LayerGroup(prevMarks3)};
+  var overlayMaps = {
+    cigarettes: layer.CigaretteSmokingPrevalence,
+    tobacco: layer.TobaccoUsePrevalence,
+    smoking: layer.TobaccoSmokingPrevalence
+  }
+  var myMap = L.map("map", {
+      center: [46.2276, 2.2137],
+      zoom: 6,
+      layers: [map, layer.CigaretteSmokingPrevalence,layer.TobaccoUsePrevalence,layer.TobaccoSmokingPrevalence]
+  });   
+  var legend = L.control({position: 'bottomright'});
+          legend.onAdd=function(myMap){
+              var div=L.DomUtil.create('div','legend');
+              var labels = ["<10","10-19","20-29","30-39","40-49","50-59","60+"];
+              grades = [0, 10, 20, 30, 40, 50, 60],
+              div.innerHTML='<div style= background-color:#FFFFFF >&nbsp;&nbsp;<b>Legend</b>&nbsp;&nbsp;</div';
+              for(var i=0; i <grades.length; i++){
+                  div.innerHTML+='<div style= "background-color:#FFFFFF">&nbsp;&nbsp;<i style="background:'+markerColor(grades[i])+' ">&nbsp;</i>&nbsp;&nbsp;'
+                  +labels[i]+'&nbsp;&nbsp;<br/></div>';
+              }
+              return div;
+          }
+  L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+  legend.addTo(myMap);
+}
+function createMarkers(response) {
+  // Pull the "stations" property from response.data.
+  var data= response;
+
+  // Initialize an array to hold bike markers.
+  var prev1Markers = [];
+  var prev2Markers = [];
+  var prev3Markers = [];
+
+  // Loop through the stations array.
+  for (var index = 0; index < data.length; index++) {
+    var country = data[index];
+    console.log(country)
+    // For each station, create a marker, and bind a popup with the station's name.
+  //   var quakeMarker = L.marker([quake.geometry.coordinates[1], quake.geometry.coordinates[0]])
+  //     .bindPopup("<h3>" + quake.properties.place + "<h3><h3>Depth: " + quake.geometry.coordinates[2] + "</h3>");
+      var prev1Marker = L.circleMarker([country.Years[0].Latitude, country.Years[0].Longitude], {
+          radius: country.Years[0].PriceUSD*2,
+          color: "#000000",
+          weight: .5,
+          fillColor: markerColor(country.Years[0].CigaretteSmokingPrevalence),
+          fillOpacity: 0.9
+      }).bindPopup("<h3>" + country.Country + "<h3><h3>Price: " + country.Years[0].Price + country.Years[0].Currency + "</h3>" + "<h3><h3>Price In USD: " + country.Years[0].PriceUSD + "</h3>"+ "<h3><h3>CigaretteSmokingPrevalence: " + country.Years[0].CigaretteSmokingPrevalence + "</h3>");
+      var prev2Marker = L.circleMarker([country.Years[0].Latitude, country.Years[0].Longitude], {
+          radius: country.Years[0].PriceUSD*2,
+          color: "#000000",
+          weight: .5,
+          fillColor: markerColor(country.Years[0].TobaccoSmokingPrevalence),
+          fillOpacity: 0.9
+      }).bindPopup("<h3>" + country.Country + "<h3><h3>Price: " + country.Years[0].Price + country.Years[0].Currency + "</h3>" + "<h3><h3>Price In USD: " + country.Years[0].PriceUSD + "</h3>" + "<h3><h3>TobaccoUsePrevalence: " + country.Years[0].TobaccoUsePrevalence + "</h3>");
+      var prev3Marker = L.circleMarker([country.Years[0].Latitude, country.Years[0].Longitude], {
+          radius: country.Years[0].PriceUSD*2,
+          color: "#000000",
+          weight: .5,
+          fillColor: markerColor(country.Years[0].TobaccoUsePrevalence),
+          fillOpacity: 0.9
+      }).bindPopup("<h3>" + country.Country + "<h3><h3>Price: " + country.Years[0].Price + country.Years[0].Currency + "</h3>" + "<h3><h3>Price In USD: " + country.Years[0].PriceUSD + "</h3>" + "<h3><h3>TobaccoUsePrevalence: " + country.Years[0].TobaccoSmokingPrevalence + "</h3>");
+      
+      //   // Add the marker to the bikeMarkers array.
+      prev1Markers.push(prev1Marker);
+      prev2Markers.push(prev2Marker);
+      prev3Markers.push(prev3Marker);
+  }
+
+  // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
+  createMap(prev1Markers,prev2Markers,prev3Markers);
+}
+
+// Perform an API call to the Citi Bike API to get the station information. Call createMarkers when it completes.
+d3.json("api/v1.0/country").then(createMarkers);
+
+
+
 //          // Use the first location from the list to build the initial plots    
 //          var sample = locations[0];   
 //          buildDemographicInfo(sampleId);
