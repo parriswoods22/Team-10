@@ -261,3 +261,19 @@ demo = {
 
 
 }
+
+function getCountry(data){
+  var countries = []
+
+  for (var index = 0; index < quakes.length; index++) {
+    var country = data[index].country;
+    countries.push(country);
+  }
+}
+
+d3.json("api/v1.0/country").then(getCountry);
+
+var dropdown = d3.select("#selDataset")
+
+
+
