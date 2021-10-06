@@ -133,34 +133,43 @@ d3.json("api/v1.0/country").then(createMarkers);
 
 
 
-//          // Use the first location from the list to build the initial plots    
-//          var location = locations[0];   
-//          buildDemographicInfo(country);
-//          buildCharts(country);    
+         // Use the first location from the list to build the initial plots    
+        //  var firstLocation = locations[0];   
+        //  buildDemographicInfo(country);
+        //  buildCharts(country);    
 // });
 // });
 // };
 
-// function optionChanged(country) {
-//      buildDemographicInfo(country);
-//      buildCharts(country);    
-// };
+function optionChanged(country) {
+     buildDemographicInfo(country);
+    //  buildCharts(country);    
+};
 
-// function buildDemographicInfo(sampleId) {
-//      console.log("buildDemographicInfo():", sampleId);
-//      var metadata = data.metadata;
-//      var sample_metadata = d3.select("#sample-metadata");
-//      sample_metadata.selectAll("p").remove();
-//      metadata.forEach(row => {
-//           if (row.id === parseInt(sampleId)) {
-//                Object.entries(row).forEach(([key, value]) => {
-//                     sample_metadata.append("p").text(key + ": " + value);
-//                })
-               
-//           }
-//      });
-// }
-// // Initialize the dashboard
+function buildDemographicInfo(country) {
+    d3.json(url).then((json_data) => {  
+        data = json_data;
+        console.log("buildDemographicInfo():", country);
+        var sample_metadata = d3.select("#sample-metadata");
+        sample_metadata.selectAll("p").remove();
+        for (var index = 0; index < data.length; index++) {
+            var country2 = data[index];
+            if (country2.Country == country) {
+                Object.entries(country2.Years[0]).forEach(([key, value]) => {
+                    sample_metadata.append("p").text(key + ": " + value);
+            })}; 
+          console.log(country)
+        
+        // data.forEach(row => {
+        //       if (row.Country === parseInt(country)) {
+        //            Object.Years(row).forEach(([key, value]) => {
+        //                 sample_metadata.append("p").text(key + ": " + value);
+        //        });
+        //        console.log(row)
+        //   };
+    }});
+};
+// Initialize the dashboard
 // init();
 
 // // Build the charts
