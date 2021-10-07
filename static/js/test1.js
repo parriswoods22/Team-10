@@ -15,6 +15,7 @@ d3.json(url).then((json_data) => {
       locations.push(country);
       console.log(locations)
     }
+
      locations.forEach((location) => { 
        console.log(location)    
          selector

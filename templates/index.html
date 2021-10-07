@@ -13,6 +13,7 @@
 </head>
 
 <body>
+  <script src="lodash.js"></script>  
 
   <div class="container">
     <div class="row">
@@ -30,14 +31,20 @@
           <h5>Country:</h5>
           <select id="selDataset" onchange="optionChanged(this.value)"></select>
         </div>
+      </div>  
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Country Info</h3>
+            <h3 class="panel-title">Latest Country Info</h3>
           </div>
           <div id="sample-metadata" class="panel-body"></div>
         </div>
       </div>
-      <div class="col-md-5">
+    </div>
+    <div class='row'>
+      <div class="col-md-12">
         <div id="line"></div>
       </div>
     </div>
@@ -47,9 +54,6 @@
       </div>
     </div>
   </div>
-  <div class="container">
-    
-  </div>
 
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -57,6 +61,7 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
+    
   <!-- <script src="./static/js/bonus.js"></script> -->
   
 </body>
