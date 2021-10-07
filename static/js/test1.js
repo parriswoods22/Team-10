@@ -92,7 +92,7 @@ function createMarkers(response) {
   // Loop through the stations array.
   for (var index = 0; index < data.length; index++) {
     var country = data[index];
-    console.log(country)
+    // console.log(country)
     // For each station, create a marker, and bind a popup with the station's name.
   //   var quakeMarker = L.marker([quake.geometry.coordinates[1], quake.geometry.coordinates[0]])
   //     .bindPopup("<h3>" + quake.properties.place + "<h3><h3>Depth: " + quake.geometry.coordinates[2] + "</h3>");
@@ -143,7 +143,7 @@ d3.json("api/v1.0/country").then(createMarkers);
 
 function optionChanged(country) {
      buildDemographicInfo(country);
-    //  buildCharts(country);    
+     buildCharts(country);    
 };
 
 function buildDemographicInfo(country) {
@@ -159,48 +159,119 @@ function buildDemographicInfo(country) {
                     sample_metadata.append("p").text(key + ": " + value);
             })}; 
           console.log(country)
-        
-        // data.forEach(row => {
-        //       if (row.Country === parseInt(country)) {
-        //            Object.Years(row).forEach(([key, value]) => {
-        //                 sample_metadata.append("p").text(key + ": " + value);
-        //        });
-        //        console.log(row)
-        //   };
+      
+
     }});
 };
 // Initialize the dashboard
 // init();
 
 // // Build the charts
-// function buildCharts(sampleId) {
+function buildCharts(country) {
+    d3.json(url).then((json_data) => {  
+        data = json_data;
+        for (var index = 0; index < data.length; index++) {
+            var country2 = data[index];
+            if (country2.Country == country) {
+                available_years = Object.keys(country2.Years).length;
+                available_year_list = []
+                available_year_list2 = []
+                available_year_list3 = []
+                available_year_list4 = []
+                for (var year = 0; year < available_years; year++) {
+                    x = country2.Years[year].Year
+                    available_year_list.push(x)
+                    y = country2.Years[year].CigaretteSmokingPrevalence
+                    available_year_list2.push(y)
+                    z = country2.Years[year].TobaccoUsePrevalence
+                    available_year_list3.push(z)
+                    j = country2.Years[year].PriceUSD
+                    available_year_list4.push(j)
+                }
+                var line_plot = { 
+                    // x: [],  
+                    // y: [], 
+                    
+                    x: available_year_list,
+                    y: available_year_list2,
+                  //   text: sample.otu_labels.slice(0, cut_point).reverse(),
+                    mode: 'lines+markers',
+                    name: 'Cigarette Smoking Prevalence'
+                  //   orientation: "h"
+               };
+                    console.log(available_years)
+           var line_plot1 = {
+            x: available_year_list,
+            y: available_year_list3,
+          //   text: sample.otu_labels.slice(0, cut_point).reverse(),
+            mode: 'lines+markers',
+            name: 'Tobacco Use Prevalence'
+          //   orientation: "h"
+       };
+               var layout = {
+                title: country,
+                margin: {
+                     l: 75,
+                     r: 75,
+                     t: 75,
+                     b: 50,
+                }
+           };
+           var lines = [line_plot, line_plot1]
+           Plotly.newPlot('line', lines, layout);
+
+
+           var bar_chart = [{
+               x:available_year_list,
+               y:available_year_list4,
+               type: 'bar',
+           }]; 
+console.log(available_year_list4)
+           var layout = {
+                      title: 'Price',
+                      margin: {
+                           l: 75,
+                           r: 75,
+                           t: 75,
+                           b: 50,
+                      }
+                 };
+
+            Plotly.newPlot('bar', bar_chart, layout);
+
+            
+    }}}); 
+    };
 //      console.log('buildCharts():', sampleId);
 //      var sample = data.samples.filter(sample => sample.id === sampleId)[0];
 //      var cut_point = sample.sample_values.length;
 //      if (cut_point > 10) {
 //           cut_point = 10;
 //      }
-//      var bar_plot = [{
-//           x: sample.sample_values.slice(0, cut_point).reverse(),
-//           y: sample.otu_ids.slice(0, cut_point).map(id => "otu " + id).reverse(),
-//           text: sample.otu_labels.slice(0, cut_point).reverse(),
-//           type: "bar", 
-//           orientation: "h"
-//      }];
+    //  var line_plot = [{
+    //       x: data[5].Years.year,
+    //       y: data[5].Years.CigaretteSmokingPrevalence,
+    //     //   text: sample.otu_labels.slice(0, cut_point).reverse(),
+    //       mode: 'lines+markers',
+    //       name: 'Scatter + Lines'
+    //     //   orientation: "h"
+    //  }];
 
 //      // Apply the layout
-//      var layout = {
-//           title: 'Top 10 OTUs',
-//           margin: {
-//                l: 75,
-//                r: 75,
-//                t: 75,
-//                b: 50,
-//           }
-//      };
+    //  var layout = {
+    //       title: 'Top 10 OTUs',
+    //       margin: {
+    //            l: 75,
+    //            r: 75,
+    //            t: 75,
+    //            b: 50,
+    //       }
+    //  };
+    
 
 //      // Place the plot in the div tag
-//      Plotly.newPlot('bar', bar_plot, layout);
+    //  Plotly.newPlot('line', line_plot, layout);
+
   
 //      // Build the bubble plot
 //      var bubble_plot = [{
