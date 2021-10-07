@@ -11,5 +11,5 @@ Our final site first creates a map, made with Leaflet, with our datapoints. The 
 After the map, the user will be presented with a dropdown and upon choosing a country, an information box will populate for the country’s latest data: the three prevalences, the price in that country’s currency, and the price in USD. A Plotly made line graph will appear under the info box that shows cigarette smoking prevalence and tobacco use prevalence across time for that country. Next, a Plotly made bar graph will populate showing the price of cigarettes over time for that country. 
 <br> <br>
 Source to data: https://www.kaggle.com/ozgurdogan646/who-tobacco-and-smoking-data-20082018
-Exchange rate API: https://exchangerate.host/#/
-Google Map API: https://developers.google.com/maps
+<br>Exchange rate API: https://exchangerate.host/#/
+<br>Google Map API: https://developers.google.com/maps
