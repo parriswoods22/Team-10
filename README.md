@@ -1,5 +1,5 @@
 ### Worldwide Cigarette and Tobacco Smoking Prevalence Across 2008-2018
-
+![alt text](Project3Dashboard.png)
 Smoking and tobacco use has been known to lead to many serious health concerns for years. With this information, one would think the prevalence of smoking and tobacco use would decrease around the world. But does it? Is smoking and tobacco viewed the same way in each country?
 <br> <br>
 This is what we seek to answer in this project. Using datasets from 2008, 2010, 2012, 2014, 2016, and 2018, we sought to see how the prevalence of cigarettes and the price of cigarettes compared across the globe (using the latest data) and how each country compared to themselves across year.
